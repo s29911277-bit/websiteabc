@@ -1,0 +1,54 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#f7f6f2">
+  <title>BorrowBox</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+  <link rel="stylesheet" href="app.css">
+</head>
+<body data-scripts="data.js,art.js,app.js">
+  <header class="topbar">
+    <div class="wrap">
+      <a class="brand" href="#/dashboard" aria-label="BorrowBox dashboard"><span class="brand-mark">b.</span><span>borrow<span class="brand-light">box</span></span></a>
+      <nav class="main-nav" id="mainNav" aria-label="Main navigation">
+        <a href="#/dashboard" data-nav="dashboard">Dashboard</a>
+        <a href="#/browse" data-nav="browse">Browse</a>
+        <a href="#/borrowings" data-nav="borrowings">My Borrowings</a>
+        <a href="#/my-items" data-nav="my-items">My Items</a>
+        <a href="#/history" data-nav="history">History</a>
+      </nav>
+      <div class="header-actions">
+        <a class="icon-link" href="#/requests" aria-label="Borrow requests for your items">Requests <i class="count-badge" id="reqBadge" hidden>0</i></a>
+        <a class="button button-dark small" href="#/list">＋<span class="hide-sm">&nbsp;List an item</span></a>
+        <div class="user-wrap">
+          <button class="avatar-btn" id="avatarBtn" type="button" aria-haspopup="true" aria-expanded="false" aria-label="Account menu">?</button>
+          <div class="user-menu" id="userMenu" hidden>
+            <div class="user-menu-head"><b id="menuName"></b><small id="menuEmail"></small></div>
+            <a href="#/profile">Profile</a>
+            <button type="button" data-action="reset" id="resetBtn">Reset sample data</button>
+            <button type="button" data-action="logout">Log out</button>
+          </div>
+        </div>
+        <button class="menu-toggle" id="menuToggle" type="button" aria-label="Open menu" aria-expanded="false">☰</button>
+      </div>
+    </div>
+  </header>
+
+  <main class="wrap page" id="view" tabindex="-1"></main>
+
+  <footer class="site-footer">
+    <div class="wrap">
+      <span>BorrowBox · Phase 1 prototype with sample data</span>
+      <span>Share more. Buy less.</span>
+    </div>
+  </footer>
+  <div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+  <script src="shared-bootstrap.js"></script>
+</body>
+</html>

@@ -1,0 +1,20 @@
+{
+  "name": "borrowbox",
+  "version": "1.0.0",
+  "description": "Campus resource-sharing platform for students.",
+  "main": "server.js",
+  "scripts": {
+    "build": "node build.js",
+    "start": "node server.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "dependencies": {
+    "cors": "^2.8.6",
+    "express": "^5.2.1",
+    "pg": "^8.16.3"
+  }
+}

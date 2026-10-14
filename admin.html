@@ -1,0 +1,54 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#f7f6f2">
+  <title>BorrowBox Admin</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+  <link rel="stylesheet" href="app.css">
+</head>
+<body data-scripts="data.js,admin.js">
+  <header class="topbar">
+    <div class="wrap">
+      <a class="brand" href="index.html" aria-label="BorrowBox home"><span class="brand-mark">b.</span><span>borrow<span class="brand-light">box</span></span></a>
+      <span class="eyebrow">Admin</span>
+      <div class="header-actions">
+        <a class="icon-link" href="index.html">← Back to BorrowBox</a>
+        <button class="button button-outline small" id="logoutBtn" type="button" hidden>Log out</button>
+      </div>
+    </div>
+  </header>
+
+  <main class="wrap page" id="adminView" tabindex="-1">
+    <!-- Screen 10 · Admin login -->
+    <section class="admin-gate" id="gate">
+      <div>
+        <div class="eyebrow">BorrowBox · Admin</div>
+        <h1>Keep the<br>campus <em>sharing.</em></h1>
+        <p class="lead">Review listings, handle reports and watch borrowing activity across the platform.</p>
+      </div>
+      <section class="auth-card" aria-labelledby="gateTitle">
+        <div class="eyebrow">Admin access</div>
+        <h2 id="gateTitle">Admin <em>login.</em></h2>
+        <p class="auth-sub">Log in to manage the platform.</p>
+        <form id="adminForm" novalidate>
+          <label class="field">Email<input name="email" type="email" required autocomplete="username" placeholder="admin@gmail.com"></label>
+          <label class="field">Password<input name="password" type="password" required autocomplete="current-password" placeholder="Enter admin password"></label>
+          <div class="form-error" id="adminError" role="alert"></div>
+          <button class="button button-dark auth-submit" type="submit">Log in <span>↗</span></button>
+        </form>
+      </section>
+    </section>
+
+    <!-- Screen 10 · Admin dashboard -->
+    <section id="dash" hidden></section>
+  </main>
+
+  <div class="toast" id="toast" role="status" aria-live="polite"></div>
+  <script src="shared-bootstrap.js"></script>
+</body>
+</html>

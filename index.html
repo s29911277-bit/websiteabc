@@ -1,0 +1,126 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#f7f6f2">
+  <title>BorrowBox · Share more. Buy less.</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body data-scripts="data.js,art.js,auth.js">
+  <header class="topbar">
+    <div class="wrap">
+      <a class="brand" href="index.html" aria-label="BorrowBox home"><span class="brand-mark">b.</span><span>borrow<span class="brand-light">box</span></span></a>
+      <div class="header-actions"><a class="button button-dark small" href="#access">Log in</a></div>
+    </div>
+  </header>
+
+  <main>
+    <!-- Screen 1 · Landing / Login -->
+    <section class="wrap hero">
+      <div class="hero-copy">
+        <div class="eyebrow"><span class="live-dot"></span>Campus resource sharing</div>
+        <h1>Share more.<br><em>Buy less.</em></h1>
+        <p class="lead">Need a calculator for one exam or a lab coat for one practical? Borrow it from a student on campus who already owns one.</p>
+        <ul class="item-strip" aria-label="Things students borrow">
+          <li data-art="calculator" data-tone="lime">Calculator</li>
+          <li data-art="coat" data-tone="butter">Lab coat</li>
+          <li data-art="umbrella" data-tone="sky">Umbrella</li>
+          <li data-art="books" data-tone="sage">Textbook</li>
+          <li data-art="powerbank" data-tone="blush">Power bank</li>
+        </ul>
+        <div class="sticker" aria-hidden="true">SHARE<br>MORE <span>✳</span></div>
+      </div>
+
+      <section class="auth-card" id="access" aria-labelledby="authTitle">
+        <div id="welcomeBack" hidden>
+          <div class="eyebrow">Signed in</div>
+          <h2 id="welcomeTitle">Welcome <em>back.</em></h2>
+          <div class="welcome-actions">
+            <a class="button button-dark" href="app.html">Open BorrowBox <span>↗</span></a>
+            <button class="button button-outline" id="logoutBtn" type="button">Log out</button>
+          </div>
+        </div>
+
+        <div id="authForm">
+          <div class="eyebrow">Student access</div>
+          <h2 id="authTitle">Welcome <em>back.</em></h2>
+          <p class="auth-sub" id="authSub">Log in with your college email to continue.</p>
+          <div class="auth-tabs" role="tablist">
+            <button class="auth-tab active" type="button" role="tab" data-mode="login">Log in</button>
+            <button class="auth-tab" type="button" role="tab" data-mode="register">Create account</button>
+          </div>
+          <form id="studentForm" novalidate>
+            <label class="field" id="nameField" hidden>Your name
+              <input id="nameInput" name="name" maxlength="50" autocomplete="name" placeholder="e.g. Ananya Rao">
+            </label>
+            <label class="field">College email
+              <input name="email" type="email" required autocomplete="email" placeholder="you@kristujayanti.com">
+              <small>Only @kristujayanti.com addresses can join.</small>
+            </label>
+            <label class="field">Password
+              <input name="password" type="password" minlength="6" required autocomplete="current-password" placeholder="At least 6 characters">
+            </label>
+            <div class="form-error" id="formError" role="alert"></div>
+            <button class="button button-dark auth-submit" id="submitBtn" type="submit">Log in <span>↗</span></button>
+          </form>
+          <div class="auth-foot">Just looking around? <button class="link-btn" id="demoBtn" type="button">Try the demo account</button></div>
+        </div>
+      </section>
+    </section>
+
+    <section class="wrap section" id="how">
+      <div class="eyebrow">How it works</div>
+      <h2 class="section-title">Borrow it. Lend it. <em>Keep track.</em></h2>
+      <div class="how-grid">
+        <article>
+          <div class="eyebrow">Borrow</div>
+          <h3>Find it, then ask for it</h3>
+          <p>Search for what you need, check that it is available and send a request to the owner.</p>
+        </article>
+        <article>
+          <div class="eyebrow">Lend</div>
+          <h3>List what you are not using</h3>
+          <p>Add a photo and a pickup spot for things you own, then accept or decline each request.</p>
+        </article>
+        <article>
+          <div class="eyebrow">Track</div>
+          <h3>Know what is due and when</h3>
+          <p>Current borrowings, due dates, requests and returned items all stay in one place.</p>
+        </article>
+      </div>
+    </section>
+
+    <section class="wrap section" id="why" style="padding-top:8px">
+      <div class="eyebrow">Why share</div>
+      <div class="why-grid">
+        <div><h3>Affordability</h3><p>Use something for the week you need it without paying to own it.</p></div>
+        <div><h3>Resource sharing</h3><p>One calculator can see ten exams instead of sitting in a drawer.</p></div>
+        <div><h3>Fewer purchases</h3><p>Less waste, and fewer things bought once and forgotten.</p></div>
+        <div><h3>Community</h3><p>Students helping students, a block away from each other.</p></div>
+      </div>
+    </section>
+
+    <section class="wrap">
+      <div class="banner">
+        <div class="banner-mark" aria-hidden="true">b.</div>
+        <h2>If someone already has it,<br><em>why buy another?</em></h2>
+        <a class="button button-dark" href="#access">Log in to start <span>↗</span></a>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="wrap">
+      <a class="brand" href="index.html"><span class="brand-mark">b.</span><span>borrow<span class="brand-light">box</span></span></a>
+      <span>BCA 2nd year project · Phase 1 frontend prototype</span>
+      <a href="admin.html">Admin</a>
+    </div>
+  </footer>
+
+  <script src="shared-bootstrap.js"></script>
+</body>
+</html>
