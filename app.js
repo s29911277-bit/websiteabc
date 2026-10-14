@@ -325,25 +325,61 @@ function readPhoto(file) {
   });
 }
 
-function submitList(form) {
+
+async function submitList(form) {
+  console.log("SUBMIT LIST FUNCTION CALLED");
+  console.log("Listing form data:", new FormData(form));
   const err = $('#listError');
   err.textContent = '';
-  const name = $('#itName').value.trim(), location_ = $('#itLoc').value.trim();
-  const from = $('#itFrom').value, until = $('#itUntil').value;
-  if (!name) { err.textContent = 'Give the item a name.'; return; }
-  if (!location_) { err.textContent = 'Add a general pickup location.'; return; }
-  if (!from || !until) { err.textContent = 'Choose when the item is available.'; return; }
-  if (until < from) { err.textContent = 'The available-until date cannot be before the start date.'; return; }
-  const cat = $('#itCat').value;
-  const ok = createItem({
-    ownerId: me.email, name, category: cat, condition: $('#itCond').value, description: $('#itDesc').value.trim() || 'No extra details.',
-    location: location_, availableFrom: from, availableUntil: until, photo: ui.photo
-  });
-  if (!ok) { err.textContent = 'Could not save the listing. The photo may be too large, try a smaller one.'; return; }
+
+  const name = $('#itName').value.trim();
+  const location_ = $('#itLoc').value.trim();
+  const from = $('#itFrom').value;
+  const until = $('#itUntil').value;
+
+  if (!name) {
+    err.textContent = 'Give the item a name.';
+    return;
+  }
+
+  if (!location_) {
+    err.textContent = 'Add a general pickup location.';
+    return;
+  }
+
+  if (!from || !until) {
+    err.textContent = 'Choose when the item is available.';
+    return;
+  }
+
+  if (until < from) {
+    err.textContent = 'The available-until date cannot be before the start date.';
+    return;
+  }
+
+  const item = {
+    ownerId: me.email,
+    name: name,
+    category: $('#itCat').value,
+    condition: $('#itCond').value,
+    description: $('#itDesc').value.trim() || 'No extra details.',
+    location: location_,
+    availableFrom: from,
+    availableUntil: until,
+    availability: 'Available'
+  };
+
+  const saved = createItem({ ...item, photo: ui.photo });
+  if (!saved) {
+    err.textContent = 'Could not save the listing in this browser. Check available storage and try again.';
+    return;
+  }
+
   ui.photo = null;
-  toast('Your item has been listed successfully.');
+  toast('Your item has been saved.');
   location.hash = '#/my-items';
 }
+
 
 /* =====================================================================
    Screen 6 · Borrow request (borrower form + owner inbox)
@@ -782,6 +818,41 @@ const actions = {
   }
 };
 
+async function syncItemsFromServer() {
+  try {
+    const response = await fetch(`${API_BASE}/api/items`);
+    const result = await response.json();
+
+    if (!response.ok || !result.success || !Array.isArray(result.items)) {
+      console.error('Failed to load database items:', result);
+      return;
+    }
+
+    const localItems = getItems();
+    const localById = new Map(localItems.map(item => [item.id, item]));
+
+    const serverItems = result.items.map(item => {
+      const old = localById.get(item.id) || {};
+
+      return {
+        ...old,
+        ...item,
+        photo: item.photo || old.photo || null,
+        art: item.art || old.art || null,
+        createdAt: item.createdAt || old.createdAt || ''
+      };
+    });
+
+    const serverIds = new Set(serverItems.map(item => item.id));
+    const localOnlyItems = localItems.filter(item => !serverIds.has(item.id));
+
+    setItems([...serverItems, ...localOnlyItems]);
+    console.log('Database items loaded:', serverItems.length);
+  } catch (error) {
+    console.error('Database sync failed:', error);
+  }
+}
+
 function boot() {
   refreshHeaderUser();
 
@@ -842,6 +913,7 @@ function boot() {
   });
   window.addEventListener('hashchange', () => renderCurrent(true));
   renderCurrent(true);
+  syncItemsFromServer().then(() => renderCurrent(false));
 }
 
 if (authed) boot();

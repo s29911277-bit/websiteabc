@@ -1,15 +1,11 @@
-/* BorrowBox · data layer
-   ---------------------------------------------------------------
-   Phase 1 has no backend. Everything is stored in localStorage so
-   every screen can be demonstrated with realistic sample data.
-
-   The four collections below match the MySQL tables planned for
-   phase 2:  users · items · requests (borrow_requests) · history
-   (borrowing_history).  Swapping these functions for fetch() calls
-   to an Express API is the main job of the backend phase.
-*/
+/* BorrowBox data layer. localStorage is the browser cache; save() also
+   synchronizes shared collections with the PostgreSQL API. */
 
 const COLLEGE_DOMAIN = 'kristujayanti.com';
+const API_BASE = window.BORROWBOX_API ||
+  (['localhost', '127.0.0.1'].includes(location.hostname) ? 'http://localhost:3000' : location.origin);
+const API_TOKEN = window.BORROWBOX_API_KEY || localStorage.getItem('bb_api_token') || 'borrowbox-demo-key';
+try { localStorage.setItem('bb_api_token', API_TOKEN); } catch (e) { /* ignore */ }
 const ADMIN_LOGIN = { email: 'admin@gmail.com', password: 'admin@123' };
 const MAX_LOAN_DAYS = 14;
 const SEED_VERSION = 1;
@@ -43,10 +39,40 @@ function load(key, fallback) {
   } catch (e) { return fallback; }
 }
 function save(key, value) {
-  try { localStorage.setItem(key, JSON.stringify(value)); return true; }
+  try {
+    localStorage.setItem(key, JSON.stringify(value));
+    if ([KEY.users, KEY.items, KEY.requests, KEY.history, KEY.reports].includes(key)) queueSharedSave();
+    return true;
+  }
   catch (e) { return false; }   // storage full or blocked
 }
 function drop(key) { try { localStorage.removeItem(key); } catch (e) { /* ignore */ } }
+
+let sharedSaveTimer;
+function authHeaders(extra = {}) {
+  const headers = { ...extra };
+  if (API_TOKEN) headers.Authorization = `Bearer ${API_TOKEN}`;
+  return headers;
+}
+
+function queueSharedSave() {
+  clearTimeout(sharedSaveTimer);
+  sharedSaveTimer = setTimeout(async () => {
+    const state = {
+      users: getUsers(), items: getItems(), requests: getRequests(),
+      history: getHistory(), reports: getReports()
+    };
+    try {
+      const response = await fetch(`${API_BASE}/api/state`, {
+        method: 'PUT', headers: authHeaders({ 'Content-Type': 'application/json' }),
+        body: JSON.stringify({ state })
+      });
+      if (!response.ok) throw new Error(`API returned ${response.status}`);
+    } catch (error) {
+      console.warn('Could not save shared PostgreSQL data:', error.message);
+    }
+  }, 200);
+}
 
 const getUsers    = () => load(KEY.users, {});
 const getItems    = () => load(KEY.items, []);
